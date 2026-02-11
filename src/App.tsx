@@ -25,7 +25,7 @@ const Good: React.FC<Props> = ({ good }) => <li data-cy="Good">{good}</li>;
 
 export const App: React.FC = () => {
   let visibleGoods = [...goodsFromServer];
-  const [sortField, setSortField] = useState<SortType | ''>('');
+  const [sortField, setSortField] = useState<SortType>(SortType.Default);
   const [reversed, setReversed] = useState(false);
 
   if (sortField) {
@@ -42,7 +42,7 @@ export const App: React.FC = () => {
   }
 
   if (reversed) {
-    visibleGoods = visibleGoods.toReversed();
+    visibleGoods = [...visibleGoods].reverse();
   }
 
   return (
@@ -76,12 +76,12 @@ export const App: React.FC = () => {
           Reverse
         </button>
 
-        {(sortField || reversed) && (
+        {(sortField !== SortType.Default || reversed) && (
           <button
             type="button"
             className={cn('button is-danger')}
             onClick={() => {
-              setSortField('');
+              setSortField(SortType.Default);
               setReversed(false);
             }}
           >
